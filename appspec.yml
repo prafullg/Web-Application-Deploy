@@ -3,8 +3,10 @@ os: linux
 files:
   - source: /
     destination: /home/ec2-user/app
+
 hooks:
   AfterInstall:
     - location: scripts/deploy.sh
       timeout: 300
       runas: root
+      interpreter: [ "bash" ]  # 👈 ADD THIS LINE
