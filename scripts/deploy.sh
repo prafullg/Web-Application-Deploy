@@ -15,5 +15,5 @@ docker rm praful-app || true
 echo "Pulling latest image..."
 docker pull $IMAGE
 
-echo "Running container on port 80..."
-docker run -d --name praful-app -p 80:5000 $IMAGE
+echo "Running container on port 5000..."
+docker run -d --name praful-app -p 5000:5000 $IMAGE
