@@ -1,37 +1,18 @@
 version: 0.2
 
-env:
-  variables:
-    ECR_REPO: "648908580279.dkr.ecr.ap-south-1.amazonaws.com/devenvmanual"
-    IMAGE_TAG: "latest"
-
 phases:
-  install:
-    runtime-versions:
-      docker: 20
-    commands:
-      - echo "Installing dependencies..."
-
   pre_build:
     commands:
-      - echo "Logging into ECR..."
-      - aws --version
-      - aws sts get-caller-identity
-      - export LOGIN_PASSWORD=$(aws ecr get-login-password --region ap-south-1)
-      - echo "$LOGIN_PASSWORD" | docker login --username AWS --password-stdin $ECR_REPO
-
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 648908580279.dkr.ecr.ap-south-1.amazonaws.com
   build:
     commands:
-      - echo "Building Docker image..."
-      - docker build -t $ECR_REPO:$IMAGE_TAG .
-      - docker tag $ECR_REPO:$IMAGE_TAG $ECR_REPO:$IMAGE_TAG
-
+      - echo Building Docker image...
+      - docker build -t praful-dev .
+      - docker tag praful-dev:latest 648908580279.dkr.ecr.ap-south-1.amazonaws.com/praful-dev:latest
   post_build:
     commands:
-      - echo "Pushing Docker image to ECR..."
-      - docker push $ECR_REPO:$IMAGE_TAG
-      - echo "Build and push complete."
-
+      - echo Pushing Docker image...
+      - docker push 648908580279.dkr.ecr.ap-south-1.amazonaws.com/praful-dev:latest
 artifacts:
-  files:
-    - '**/*'
+  files: '**/*'
