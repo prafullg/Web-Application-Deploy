@@ -12,7 +12,9 @@ phases:
       - docker tag praful-dev:latest 648908580279.dkr.ecr.ap-south-1.amazonaws.com/praful-dev:latest
   post_build:
     commands:
-      - echo Pushing Docker image...
+      - echo Pushing image to ECR...
       - docker push 648908580279.dkr.ecr.ap-south-1.amazonaws.com/praful-dev:latest
 artifacts:
-  files: '**/*'
+  files:
+    - appspec.yml
+    - scripts/deploy.sh
