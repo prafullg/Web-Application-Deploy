@@ -14,13 +14,13 @@ phases:
     commands:
       - echo Pushing image to ECR...
       - docker push 648908580279.dkr.ecr.ap-south-1.amazonaws.com/praful-dev:latest
-
-      # Prepare output for CodeDeploy
-      - echo Preparing files for CodeDeploy...
+      - echo Preparing deployment artifacts...
       - mkdir -p output
       - cp appspec.yml output/
       - cp scripts/deploy.sh output/
 
 artifacts:
   files:
-    - output/**
+    - appspec.yml
+    - scripts/deploy.sh
+  base-directory: output
