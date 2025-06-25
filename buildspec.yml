@@ -5,16 +5,23 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 648908580279.dkr.ecr.ap-south-1.amazonaws.com
+
   build:
     commands:
       - echo Building Docker image...
       - docker build -t praful-dev .
       - docker tag praful-dev:latest 648908580279.dkr.ecr.ap-south-1.amazonaws.com/praful-dev:latest
+
   post_build:
     commands:
       - echo Pushing image to ECR...
       - docker push 648908580279.dkr.ecr.ap-south-1.amazonaws.com/praful-dev:latest
+      - echo Writing files for CodeDeploy...
+      - mkdir -p output
+      - cp appspec.yml output/
+      - cp scripts/deploy.sh output/
+
 artifacts:
   files:
-    - appspec.yml
-    - scripts/deploy.sh
+    - output/**/*
+  base-directory: output
